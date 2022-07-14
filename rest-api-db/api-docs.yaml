@@ -1,0 +1,1 @@
+{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://rest-api-db.default.apps.34.138.142.240.nip.io","description":"Generated server url"}],"paths":{"/customers":{"get":{"tags":["customer-controller"],"operationId":"getCustomers","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}}},"components":{}}

@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: rest-api-db
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=rest-api-db"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
+  providesApis:
+  - rest-api-db
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: rest-api-db
+  description: The Customer API
+  tags:
+    - api
+    - tanzu
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: default-team
+  definition:
+    $text: http://rest-api-db.default.apps.34.138.142.240.nip.io/v3/api-docs

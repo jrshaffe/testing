@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: rest-api-db
+  jpa:
+    defer-datasource-initialization: true
