@@ -9,7 +9,7 @@ metadata:
 spec:
   source:
     git:
-      url: https://github.com/pivotal/acc-content
+      url: "ssh://git@github.com:22/pivotal/acc-content.git"
       ref:
         branch: main
     subPath: rest-api-db
