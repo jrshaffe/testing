@@ -1,0 +1,12 @@
+accelerator:
+  displayName: REST API DB
+  description: REST API Database App using Spring Boot and JPA
+  iconUrl: https://raw.githubusercontent.com/sample-accelerators/icons/master/icon-data.png
+  tags:
+  - java
+  - spring
+  - tanzu
+
+engine:
+  merge:
+    - include: [ "**" ]
