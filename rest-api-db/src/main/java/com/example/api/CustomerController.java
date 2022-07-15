@@ -37,7 +37,8 @@ public class CustomerController {
 
 	@PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Customer postCustomer(@RequestBody Customer customer) {
-		return customerRepository.save(customer);
+		Customer c = new Customer(customer.getFirstName(), customer.getLastName());
+		return customerRepository.save(c);
 	}
 
 	@PutMapping(value = "/customers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
