@@ -11,6 +11,8 @@ spec:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
+  - name: gitops_ssh_secret
+    value: git-ssh
   source:
     git:
       url: "ssh://git@github.com:22/pivotal/acc-content.git"
