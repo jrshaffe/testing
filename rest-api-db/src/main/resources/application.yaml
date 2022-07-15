@@ -3,3 +3,12 @@ spring:
     name: rest-api-db
   jpa:
     defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:oracle:thin:@xedb-sample.default:1521/XE
+    username: system
+    password: Spr1ng!
+  sql:
+    init:
+      mode: never
