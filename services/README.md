@@ -50,7 +50,7 @@ It will take a few minutes for it to become `Healthy`.
 
 ### Create a user for our sample
 
-We need to create a user and a table that our sample app can use. We create a user in the "Pluggable Database" named `XEPDB1` the was created during the installation. To be able to connect to the database we run the following to connect to the pod that is running the database:
+We need to create a user and a table that our sample app can use. We create a user in the "Pluggable Database" named `XEPDB1` that was created during the installation. To be able to connect to the database we run the following to connect to the pod that is running the database:
 
 ```
 kubectl exec -it $(kubectl get pod -l=app=xedb-sample -oname) -- /bin/bash
