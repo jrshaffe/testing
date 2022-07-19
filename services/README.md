@@ -20,7 +20,7 @@ kubectl get pods -n oracle-database-operator-system
 
 ### Create database
 
-For the sample database we create a [configuration file](oracle/create/xedb-sample.yaml) using the instructions outlined here: https://github.com/oracle/oracle-database-operator/blob/main/docs/sidb/README.md#xe-database.
+For the sample Oracle XE database we create a [configuration file](oracle/create/xedb-sample.yaml) using the instructions outlined here: https://github.com/oracle/oracle-database-operator/blob/main/docs/sidb/README.md#xe-database.
 
 > NOTE: We create this sample database in the `default` namespace.
 
@@ -50,7 +50,7 @@ It will take a few minutes for it to become `Healthy`.
 
 ### Create a user for our sample
 
-We need to create a user and a table that our sample app can use. We craete a user in the Pluggable DataBase named XEPDB1 the was created during the installation. To connect to the Container Database we run the following to connect to the pod that is running the database:
+We need to create a user and a table that our sample app can use. We create a user in the "Pluggable Database" named `XEPDB1` the was created during the installation. To be able to connect to the database we run the following to connect to the pod that is running the database:
 
 ```
 kubectl exec -it $(kubectl get pod -l=app=xedb-sample -oname) -- /bin/bash
