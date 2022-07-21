@@ -13,12 +13,6 @@ spec:
       autoscaling.knative.dev/minScale: "1"
   - name: gitops_ssh_secret
     value: git-ssh
-  serviceClaims:
-    - name: db
-      ref:
-        apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-        kind: ResourceClaim
-        name: oracle-xedb-claim
   source:
     git:
       url: "ssh://git@github.com:22/pivotal/acc-content.git"
