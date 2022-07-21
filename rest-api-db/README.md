@@ -31,7 +31,7 @@ curl http://localhost:8080/v3/api-docs
 You can access the `customers` API endpoint using `curl`:
 
 ```bash
-curl -w'\n' curl localhost:8080/customers  
+curl -w'\n' localhost:8080/customers
 ```
 
 You can add a couple of customers using `curl` as well:
