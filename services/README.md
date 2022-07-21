@@ -137,7 +137,7 @@ tanzu service claim create postgres-sample-claim \
   --resource-api-version sql.tanzu.vmware.com/v1
 ```
 
-### Create the service claim
+### Deploy app using the service claim
 
 Since the claim is already created we can use it when we deploy our sample apps using the `--service-ref` option:
 
@@ -307,7 +307,7 @@ tanzu service claim create oracle-xedb-claim \
   --resource-api-version v1
 ```
 
-### Create the service claim
+### Deploy app using the service claim
 
 Since the claim is already created we can use it when we deploy our sample apps using the `--service-ref` option:
 
