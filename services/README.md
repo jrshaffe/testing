@@ -2,7 +2,13 @@
 
 This document describes how to install service operators and other packages that are needed to operate and provision services that can be used by the sample applictions.
 
-## PostgreSQL
+Databases:
+
+- [PostgreSQL](#postgres)
+- [Oracle](#oracle)
+- [MicrosoftSQL Server](#sqlserver)
+
+## <a name="postgres"></a> PostgreSQL
 
 For the PostgreSQL database we are using the [Tanzu Postgres Operator](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/1.8/tanzu-postgres-k8s/GUID-install-operator.html) provided by [ VMware Tanzu SQL with Postgres for Kubernetes](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html).
 
@@ -150,7 +156,7 @@ tanzu apps workload create rest-api-db \
   --service-ref db=services.apps.tanzu.vmware.com/v1alpha1:ResourceClaim:postgres-sample-claim
 ```
 
-## Oracle
+## <a name="oracle"></a> Oracle
 
 For the Oracle<sup>®️</sup> Database we use the [Oracle Database Operator for Kubernetes](https://github.com/oracle/oracle-database-operator) provided by Oracle Corporation. 
 
@@ -230,8 +236,7 @@ Finally, create the table:
 
 ```
 create table "CUSTOMER"
-  ("ID" number(19,0) generated always as identity start with 0 minvalue 0
-      cache 20 noorder  nocycle  nokeep  noscale  not null enable,
+  ("ID" number(19,0) generated always as identity,
     "FIRST_NAME" varchar2(255 char),
     "LAST_NAME" varchar2(255 char),
     primary key ("ID") using index
@@ -321,6 +326,6 @@ tanzu apps workload create rest-api-db \
   --service-ref db=services.apps.tanzu.vmware.com/v1alpha1:ResourceClaim:oracle-xedb-claim
 ```
 
-## Microsoft SQL Server
+## <a name="sqlserver"></a> Microsoft SQL Server
 
 TBD
