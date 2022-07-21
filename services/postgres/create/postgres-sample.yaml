@@ -1,0 +1,13 @@
+apiVersion: sql.tanzu.vmware.com/v1
+kind: Postgres
+metadata:
+  name: postgres-sample
+spec:
+  memory: 800Mi
+  cpu: "0.8"
+  storageClassName: standard-rwo
+  storageSize: 10G
+  pgConfig:
+    dbname: postgres-sample
+    username: pgadmin
+    appUser: tanzu

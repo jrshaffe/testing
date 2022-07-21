@@ -2,6 +2,154 @@
 
 This document describes how to install service operators and other packages that are needed to operate and provision services that can be used by the sample applictions.
 
+## PostgreSQL
+
+For the PostgreSQL database we are using the [Tanzu Postgres Operator](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/1.8/tanzu-postgres-k8s/GUID-install-operator.html) provided by [ VMware Tanzu SQL with Postgres for Kubernetes](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html).
+
+### Install operator
+
+> We will install directly from TanzuNet ignoring the [warnings in the doc](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/1.8/tanzu-postgres-k8s/GUID-install-operator.html#relocate-images-to-a-private-registry). If you prefer, feel free to relocate the images and adjust these instructions accordingly.
+
+> Log in to the [Tanzu Network](https://network.tanzu.vmware.com/) and then accept the EULA on the product page for [Packages for VMware Tanzu Data Services](https://network.tanzu.vmware.com/products/packages-for-vmware-tanzu-data-services).
+
+Install the package repository `tanzu-data-services-repository`:
+
+```
+tanzu package repository add tanzu-data-services-repository \
+  --url registry.tanzu.vmware.com/packages-for-vmware-tanzu-data-services/tds-packages:1.1.0 \
+  -n tap-install
+```
+
+> Postgres Operator version 1.8.0 is part of TDS version 1.1.0
+
+> We rely on the `tap-registry` secret in the `tap-install` namespace for the package installation.
+
+Install the Postgres operator:
+
+```
+tanzu package install postgres-operator --package-name postgres-operator.sql.tanzu.vmware.com --version 1.8.0 \
+  -n tap-install \
+  -f services/postgres/create/postgres-operator-values.yaml
+```
+
+### Create database instance
+
+Review the storage class and other configuration settings to use based on the [Deploying a Postgres Instance - Prerequisits](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/1.8/tanzu-postgres-k8s/GUID-create-delete-postgres.html#prerequisites) section.
+
+Update the [postgres-sample.yaml](postgres/create/postgres-sample.yaml) with the storage class and make any other adjsutments as needed.
+
+> postgres-sample.yaml
+```
+apiVersion: sql.tanzu.vmware.com/v1
+kind: Postgres
+metadata:
+  name: postgres-sample
+spec:
+  memory: 800Mi
+  cpu: "0.8"
+  storageClassName: standard
+  storageSize: 10G
+  pgConfig:
+    dbname: postgres-sample
+    username: pgadmin
+    appUser: tanzu
+```
+
+Deploy the database instance manifest using:
+
+```
+kubectl apply -f services/postgres/create/postgres-sample.yaml
+```
+
+Wait for the database to become `Running`:
+
+```
+kubectl get postgres/postgres-sample
+```
+
+### Create the ClusterInstanceClass
+
+In order to bind to the Postgres databas we need to create a `ClusterInstanceClass` that we can use.
+
+> clusterinstanceclass.yaml
+```
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: postgres-sample
+spec:
+  description:
+    short: PostgreSQL Database
+  pool:
+    group: sql.tanzu.vmware.com
+    kind: Postgres
+```
+
+Create the class using:
+
+```
+kubectl apply -f services/postgres/service-binding/clusterinstanceclass.yaml
+```
+
+### Create the service claim
+
+With all the pieces in place we can now create our service claim.
+
+Let's check that we have the service class defined:
+
+```
+tanzu services classes list
+```
+
+We should see something like:
+
+```
+  NAME             DESCRIPTION                       
+  postgres-sample  PostgreSQL Database               
+```
+
+Next, we can check that we have an instance to claim for the `postgres-sample` class:
+
+```
+tanzu services claimable list --class postgres-sample
+```
+
+We should see something like:
+
+```
+  NAME             NAMESPACE  KIND      APIVERSION               
+  postgres-sample  default    Postgres  sql.tanzu.vmware.com/v1  
+```
+
+We can now claim this service:
+
+```
+tanzu service claim create postgres-sample-claim \
+  --resource-name postgres-sample \
+  --resource-kind Postgres \
+  --resource-api-version sql.tanzu.vmware.com/v1
+```
+
+### Create the service claim
+
+Since the claim is already created we can use it when we deploy our sample apps using the `--service-ref` option:
+
+Change to the app directory:
+
+```
+cd rest-api-db
+```
+
+Then deploy the workload for the app:
+
+```
+tanzu apps workload create rest-api-db \
+  --file config/workload.yaml \
+  --env spring_profiles_active=postgres \
+  --service-ref db=services.apps.tanzu.vmware.com/v1alpha1:ResourceClaim:postgres-sample-claim
+```
+
 ## Oracle
 
 For the Oracle<sup>®️</sup> Database we use the [Oracle Database Operator for Kubernetes](https://github.com/oracle/oracle-database-operator) provided by Oracle Corporation. 
@@ -18,7 +166,7 @@ Check that the pods are running:
 kubectl get pods -n oracle-database-operator-system
 ```
 
-### Create database
+### Create database instance
 
 For the sample Oracle XE database we create a [configuration file](oracle/create/xedb-sample.yaml) using the instructions outlined here: https://github.com/oracle/oracle-database-operator/blob/main/docs/sidb/README.md#xe-database.
 
@@ -154,7 +302,17 @@ tanzu service claim create oracle-xedb-claim \
   --resource-api-version v1
 ```
 
-Once the claim is created we can use it when we deploy our sample apps using the `--service-ref` option:
+### Create the service claim
+
+Since the claim is already created we can use it when we deploy our sample apps using the `--service-ref` option:
+
+Change to the app directory:
+
+```
+cd rest-api-db
+```
+
+Then deploy the workload for the app:
 
 ```
 tanzu apps workload create rest-api-db \

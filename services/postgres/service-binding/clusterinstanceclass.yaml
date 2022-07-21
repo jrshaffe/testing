@@ -1,0 +1,11 @@
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: postgres-sample
+spec:
+  description:
+    short: PostgreSQL Database
+  pool:
+    group: sql.tanzu.vmware.com
+    kind: Postgres
