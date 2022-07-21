@@ -5,7 +5,7 @@ metadata:
 spec:
   memory: 800Mi
   cpu: "0.8"
-  storageClassName: standard-rwo
+  storageClassName: standard
   storageSize: 10G
   pgConfig:
     dbname: postgres-sample
