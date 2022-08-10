@@ -38,6 +38,39 @@ tanzu package install postgres-operator --package-name postgres-operator.sql.tan
   -f services/postgres/create/postgres-operator-values.yaml
 ```
 
+### Create the ClusterInstanceClass
+
+In order to bind to the Postgres databas we need to create a `ClusterInstanceClass` that we can use.
+
+> clusterinstanceclass.yaml
+```
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: postgres-sample
+spec:
+  description:
+    short: PostgreSQL Database
+  pool:
+    group: sql.tanzu.vmware.com
+    kind: Postgres
+```
+
+Create the class using:
+
+```
+kubectl apply -f services/postgres/service-binding/clusterinstanceclass.yaml
+```
+
+### Create the ClusteRole
+
+For Services Toolkit to be able to read the secrets specified by the class we need to create a `ClusterRole`:
+
+```
+kubectl apply -f services/postgres/service-binding/services-toolkit-rbac.yaml
+```
+
 ### Create database instance
 
 Review the storage class and other configuration settings to use based on the [Deploying a Postgres Instance - Prerequisits](https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/1.8/tanzu-postgres-k8s/GUID-create-delete-postgres.html#prerequisites) section.
@@ -71,31 +104,6 @@ Wait for the database to become `Running`:
 
 ```
 kubectl get postgres/postgres-sample
-```
-
-### Create the ClusterInstanceClass
-
-In order to bind to the Postgres databas we need to create a `ClusterInstanceClass` that we can use.
-
-> clusterinstanceclass.yaml
-```
----
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterInstanceClass
-metadata:
-  name: postgres-sample
-spec:
-  description:
-    short: PostgreSQL Database
-  pool:
-    group: sql.tanzu.vmware.com
-    kind: Postgres
-```
-
-Create the class using:
-
-```
-kubectl apply -f services/postgres/service-binding/clusterinstanceclass.yaml
 ```
 
 ### Create the service claim
