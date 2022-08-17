@@ -1,0 +1,13 @@
+apiVersion: sql.tanzu.vmware.com/v1
+kind: Postgres
+metadata:
+  name: rest-service-db-postgres
+spec:
+  memory: 800Mi
+  cpu: "0.8"
+  # storageClassName: standard
+  storageSize: 2G
+  pgConfig:
+    dbname: rest-service-db
+    username: pgadmin
+    appUser: pgappuser
