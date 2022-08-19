@@ -165,8 +165,8 @@ engine:
 
     - merge:
       - include: [ "**" ]
-        exclude: [ "config/postgres.yaml", "config/workload.yaml" ]
-      - include: [ "config/postgres.yaml", "config/workload.yaml" ]
+        exclude: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:

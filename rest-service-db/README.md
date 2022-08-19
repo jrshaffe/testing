@@ -103,8 +103,15 @@ one could apply for an instance, and it will be automatically provisioned.
 kubectl apply -f config/postgres.yaml
 ```
 
-
 The `workload.yaml` contains a reference to the PostgreSQL instance.
+
+Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
+namespace. Please execute following command.
+
+```bash
+kubectl apply -f config/test-pipeline.yaml
+```
+
 
 ### Tanzu CLI
 Using the Tanzu CLI one could apply the workload using the local sources:
