@@ -14,7 +14,7 @@ accelerator:
   options:
     - name: artifactId
       inputType: text
-      defaultValue: "app"
+      defaultValue: "customer-profile"
       label: Module artifact name
       required: true
     - name: groupId
@@ -24,8 +24,13 @@ accelerator:
       required: true
     - name: packageName
       inputType: text
-      defaultValue: "com.example.app"
+      defaultValue: "com.example.customerprofile"
       label: Module root package
+      required: true
+    - name: databaseName
+      inputType: text
+      defaultValue: "customer-profile-database"
+      label: Database Instance Name this Application will use (can be existing one in the cluster)
       required: true
     - name: buildTool
       inputType: select
@@ -55,6 +60,8 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -172,6 +179,14 @@ engine:
             substitutions:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
+          - type: ReplaceText
+            substitutions:
+              - text: "customer-profile-database"
+                with: "#databaseResourceName"
+          - type: ReplaceText
+            substitutions:
+              - text: "customerprofiledatabase"
+                with: "#databaseName"
 
     - merge:
       - type: InvokeFragment

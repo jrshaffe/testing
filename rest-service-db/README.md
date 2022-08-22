@@ -105,6 +105,12 @@ kubectl apply -f config/postgres.yaml
 
 The `workload.yaml` contains a reference to the PostgreSQL instance.
 
+> Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
+```metadata:
+       annotations:
+         serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: '{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}'
+```
+
 Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
 namespace. Please execute following command.
 

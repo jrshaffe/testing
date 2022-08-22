@@ -12,7 +12,7 @@ spec:
       ref:
         apiVersion: sql.tanzu.vmware.com/v1
         kind: Postgres
-        name: rest-service-db-postgres
+        name: customer-profile-database
   build:
     env:
       - name: BP_JVM_VERSION
