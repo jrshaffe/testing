@@ -6,6 +6,7 @@ metadata:
     apps.tanzu.vmware.com/has-tests: "true"
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: rest-api-db
+    apis.apps.tanzu.vmware.com/register-api: "EXPOSE_ENDPOINT"
 spec:
   params:
   - name: annotations

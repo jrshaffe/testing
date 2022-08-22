@@ -7,6 +7,27 @@ accelerator:
   - spring
   - tanzu
 
+  options:
+    - name: exposeOpenAPIEndpoint
+      label: Expose OpenAPI endpoint?
+      display: true
+      dataType: boolean
+      defaultValue: false
+
 engine:
   merge:
     - include: [ "**" ]
+      exclude: [ "config/workload.yaml" ]
+    - include: [ "config/workload.yaml" ]
+      chain:
+      - type: ReplaceText
+        condition: "#exposeOpenAPIEndpoint"
+        substitutions:
+          - text: "EXPOSE_ENDPOINT"
+            with: "true"
+      - type: ReplaceText
+        condition: "!#exposeOpenAPIEndpoint"
+        substitutions:
+          - text: "EXPOSE_ENDPOINT"
+            with: "false"
+
